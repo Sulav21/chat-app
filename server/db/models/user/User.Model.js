@@ -11,8 +11,8 @@ export const getAllUsers=()=>{
 }
 
 // get users by id
-export const getusersById=(_id)=>{
-    return userSchema.findById(_id)
+export const getusersById=filter=>{
+    return userSchema.findOne(filter)
 }
 
 // update
