@@ -1,5 +1,5 @@
 import express from "express";
-import { getusersById, insertUser } from "../db/models/user/User.Model.js";
+import { getusersById, insertUser, updateUserById } from "../db/models/user/User.Model.js";
 import { encryptPassword,comparePassword} from "../helpers/bcrypt.js";
 
 const router = express.Router();
@@ -10,13 +10,14 @@ router.post("/register", async (req, res, next) => {
     // console.log(req.body)
     const hashPassword = encryptPassword(req.body.password);
     req.body.password = hashPassword;
-    const result = await insertUser(req.body);
+    const user = await insertUser(req.body);
 
-    console.log(result);
-    result?._id
+    console.log(user);
+    user?._id
       ? res.json({
           status: "success",
           message: "User added Succesfully",
+          user
         })
       : res.json({
           status: "error",
@@ -57,5 +58,24 @@ router.post("/login", async (req, res, next) => {
     next(error);
   }
 });
+
+// update user
+router.patch('/avatar/:id',async(req,res,next)=>{
+  try{
+   const {_id} = req.params.id
+   const avatarImage = req.body.image
+   const userData= await updateUserById(_id,{
+    isAvatarImageSet:true,
+    avatarImage,
+   })
+   return res.json({
+    isSet: userData.isAvatarImageSet,
+    image:userData.avatarImage
+   })
+
+  }catch(error){
+    next(error)
+  }
+})
 
 export default router;

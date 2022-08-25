@@ -9,3 +9,4 @@ export const encryptPassword=(password)=>{
 export const comparePassword=(plainPass,hashPass)=>{
     return bcrypt.compareSync(plainPass,hashPass)
 }
+
