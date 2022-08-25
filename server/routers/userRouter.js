@@ -1,6 +1,6 @@
 import express from "express";
 import { getusersById, insertUser } from "../db/models/user/User.Model.js";
-import { encryptPassword } from "../helpers/bcrypt.js";
+import { encryptPassword,comparePassword} from "../helpers/bcrypt.js";
 
 const router = express.Router();
 
@@ -41,9 +41,11 @@ router.post("/login", async (req, res, next) => {
     if (user?._id) {
       const isMatched = comparePassword(password, user.password);
       if (isMatched) {
+        user.password = undefined
         res.json({
           status: "success",
           message: "You have successfully logged in",
+          user
         });
       }
     }

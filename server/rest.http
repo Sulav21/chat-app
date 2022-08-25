@@ -7,3 +7,12 @@ Content-Type: application/json
     "email":"sulav@gmail.com",
     "password":"123456"
 }
+
+###get user
+POST http://localhost:8000/api/v1/login
+Content-Type: application/json
+
+{
+    "email":"sulav@gmail.com",
+    "password":"123456"
+}
