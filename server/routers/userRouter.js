@@ -1,8 +1,36 @@
 import express from "express";
-import { getusersById, insertUser, updateUserById } from "../db/models/user/User.Model.js";
-import { encryptPassword,comparePassword} from "../helpers/bcrypt.js";
+import {
+  getAllUsers,
+  getusersById,
+  insertUser,
+  updateUserById,
+} from "../db/models/user/User.Model.js";
+import { encryptPassword, comparePassword } from "../helpers/bcrypt.js";
 
 const router = express.Router();
+
+// get user
+
+router.get("/:_id?", async (req, res, next) => {
+  try {
+    // const {_id} = req.params
+    // console.log(_id)
+
+    const data = await getAllUsers({ _id: { $ne: req.params._id } }).select([
+      "email",
+      "username",
+      "avatarImage",
+      "_id",
+    ]);
+    // console.log(data);
+    res.json({
+      status: "success",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 // post user
 router.post("/register", async (req, res, next) => {
@@ -14,10 +42,11 @@ router.post("/register", async (req, res, next) => {
 
     console.log(user);
     user?._id
-      ? res.json({
+      ? delete user.password &&
+        res.json({
           status: "success",
           message: "User added Succesfully",
-          user
+          user,
         })
       : res.json({
           status: "error",
@@ -42,11 +71,11 @@ router.post("/login", async (req, res, next) => {
     if (user?._id) {
       const isMatched = comparePassword(password, user.password);
       if (isMatched) {
-        user.password = undefined
+        user.password = undefined;
         res.json({
           status: "success",
           message: "You have successfully logged in",
-          user
+          user,
         });
       }
     }
@@ -60,22 +89,22 @@ router.post("/login", async (req, res, next) => {
 });
 
 // update user
-router.patch('/avatar/:id',async(req,res,next)=>{
-  try{
-   const {_id} = req.params.id
-   const avatarImage = req.body.image
-   const userData= await updateUserById(_id,{
-    isAvatarImageSet:true,
-    avatarImage,
-   })
-   return res.json({
-    isSet: userData.isAvatarImageSet,
-    image:userData.avatarImage
-   })
-
-  }catch(error){
-    next(error)
+router.post("/avatar/:_id?", async (req, res, next) => {
+  try {
+    const { _id } = req.params;
+    const avatarImage = req.body.image;
+    console.log(_id, avatarImage);
+    const userData = await updateUserById(_id, {
+      isAvatarImageSet: true,
+      avatarImage,
+    });
+    return res.json({
+      isSet: userData.isAvatarImageSet,
+      image: userData.avatarImage,
+    });
+  } catch (error) {
+    next(error);
   }
-})
+});
 
 export default router;

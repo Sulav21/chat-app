@@ -4,11 +4,11 @@ Content-Type: application/json
 
 {
     "username":"sulav",
-    "email":"sulav@gmail.com",
+    "email":"sulav13@gmail.com",
     "password":"123456"
 }
 
-###get user
+###login user
 POST http://localhost:8000/api/v1/login
 Content-Type: application/json
 
@@ -16,3 +16,6 @@ Content-Type: application/json
     "email":"sulav@gmail.com",
     "password":"123456"
 }
+
+### get user
+GET http://localhost:8000/api/v1/630821051222f1586f5a9eae

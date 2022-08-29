@@ -6,8 +6,8 @@ export const insertUser=(obj)=>{
 }
 
 // get all users
-export const getAllUsers=()=>{
-    return userSchema.find()
+export const getAllUsers=(filter)=>{
+    return userSchema.find(filter)
 }
 
 // get users by id
@@ -17,5 +17,5 @@ export const getusersById=filter=>{
 
 // update
 export const updateUserById=(filter,obj)=>{
-    return userSchema.findOneAndUpdate(filter,obj,{new:true})
+    return userSchema.findByIdAndUpdate(filter,obj,{new:true})
 }
