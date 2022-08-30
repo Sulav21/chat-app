@@ -1,8 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
-
+import {Server} from 'socket.io'
 const app = express()
+
 const PORT = process.env.PORT || 8000
 
 // middlewares
@@ -40,12 +41,30 @@ app.use((err,req,res,next)=>{
     })
 
 
-    app.listen(PORT, (error)=>{
+   const serverE =  app.listen(PORT, (error)=>{
         error && console.log(error)
         console.log(`Your server is running on PORT: ${PORT}`)
     })
 
 
+const io = new Server(serverE,{
+    cors:{
+        origin:'http://localhost:3000',
+        credentials:true,
+    }
+})
 
-
+global.onlineUsers = new Map()
+io.on('connection',(socket)=>{
+    global.chatSocket = socket;
+    socket.on('add-user',(userId)=>{
+        onlineUsers.set(userId,socket.id)
+    })
+    socket.on('send-msg',(data)=>{
+        const sendUserSocket = onlineUsers.get(data.to)
+        if(sendUserSocket){
+            socket.to(sendUserSocket).emit('msg-receive', data.msg)
+        }
+    })
+})
 
