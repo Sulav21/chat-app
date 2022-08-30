@@ -13,9 +13,14 @@ app.use(express.json())
 import { dbConnection } from './db/dbConfig.js'
 dbConnection()
 
-// routers
+// user router
 import userRouter from './routers/userRouter.js'
 app.use('/api/v1',userRouter)
+
+import messageRouter from './routers/messagesRouter.js'
+app.use('/api/v1/msg',messageRouter)
+
+
 
 app.get('/',(req,res)=>{
 res.json({

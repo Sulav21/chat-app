@@ -19,3 +19,11 @@ Content-Type: application/json
 
 ### get user
 GET http://localhost:8000/api/v1/630821051222f1586f5a9eae
+
+###post messages
+POST http://localhost:8000/api/v1/msg/addmsg
+Content-Type: application/json
+
+{"from": "630821051222f1586f5a9eae",
+"message": "advadvdvdf",
+"to": "630c60a368cf7ba27b188783"}

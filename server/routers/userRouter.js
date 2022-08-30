@@ -91,6 +91,7 @@ router.post("/login", async (req, res, next) => {
 // update user
 router.post("/avatar/:_id?", async (req, res, next) => {
   try {
+    
     const { _id } = req.params;
     const avatarImage = req.body.image;
     console.log(_id, avatarImage);
